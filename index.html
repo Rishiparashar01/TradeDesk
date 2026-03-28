@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Portfolio with Profit/Loss Highlight</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 80%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .profit {
+      color: green;
+      font-weight: bold;
+    }
+    .loss {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Portfolio</h2>
+  <table id="portfolioTable">
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>Qty</th>
+        <th>Avg Price</th>
+        <th>LTP</th>
+        <th>P&L</th>
+        <th>% Change</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Rows will be injected by JS -->
+    </tbody>
+  </table>
+
+  <script>
+    // Example portfolio data
+    const portfolio = [
+      { symbol: "RELIANCE", qty: 50, avg: 2400, ltp: 2500 },
+      { symbol: "HDFC", qty: 20, avg: 1600, ltp: 1590 },
+      { symbol: "NIFTY CE", qty: 10, avg: 220, ltp: 218 }
+    ];
+
+    const tbody = document.querySelector("#portfolioTable tbody");
+
+    portfolio.forEach(pos => {
+      const pnl = (pos.ltp - pos.avg) * pos.qty;
+      const change = ((pos.ltp - pos.avg) / pos.avg * 100).toFixed(2);
+
+      const row = document.createElement("tr");
+
+      // Fill row cells
+      row.innerHTML = `
+        <td>${pos.symbol}</td>
+        <td>${pos.qty}</td>
+        <td>${pos.avg}</td>
+        <td>${pos.ltp}</td>
+        <td>${pnl}</td>
+        <td>${change}%</td>
+      `;
+
+      // Apply profit/loss highlight
+      const pnlCell = row.children[4];
+      if (pnl > 0) {
+        pnlCell.classList.add("profit");
+      } else if (pnl < 0) {
+        pnlCell.classList.add("loss");
+      }
+
+      tbody.appendChild(row);
+    });
+  </script>
+</body>
+</html>
